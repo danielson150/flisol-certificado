@@ -6,7 +6,7 @@ import os
 
 SVGNS = u"http://www.w3.org/2000/svg"
 
-with open('certificado.svg', 'r') as mysvg:
+with open('./certificado/certificado.svg', 'r') as mysvg:
     svg = mysvg.read()
 
 svg = str(svg)
