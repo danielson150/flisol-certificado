@@ -1,8 +1,8 @@
+#!/usr/bin/env python2.7
 # -*- coding: utf-8 -*-
 from lxml import etree
 from subprocess import Popen
 import xlrd
-import os
 
 SVGNS = u"http://www.w3.org/2000/svg"
 
@@ -29,12 +29,10 @@ for x in range(1,15,1):
     name.rstrip()
     find_text(xml_data)[0].text = unicode(name)
     new_svg = etree.tostring(xml_data)
-    cm = 'touch ./speakers/' + id + '.svg'
-    os.system(cm)
-    f = open( './speakers/' + id + '.svg', 'w' )
+    svg_file = './speakers/' + id + '.svg'
+    f = open(svg_file, 'a')
     f.write( new_svg )
     f.close()
-    svg_file = './speakers/' + id + '.svg'
     pdf_file = './speakers/' + id + '.pdf'
     x = Popen(['/usr/bin/inkscape', svg_file, \
         '--export-pdf=%s' % pdf_file])
