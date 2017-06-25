@@ -1,15 +1,13 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 from lxml import etree
-from subprocess import Popen
 import xlrd
+import cairosvg
 
 SVGNS = u"http://www.w3.org/2000/svg"
 
 with open('./certificado/certificado.svg', 'r') as mysvg:
     svg = mysvg.read()
-
-svg = str(svg)
 
 xml_data = etree.fromstring(svg)
 # We search for element 'text' with id='tile_text' in SVG namespace
@@ -27,12 +25,11 @@ for x in range(1,15,1):
         name += worksheet.cell(x, y).value
 	name += ' '
     name.rstrip()
-    find_text(xml_data)[0].text = unicode(name)
-    new_svg = etree.tostring(xml_data)
+    find_text(xml_data)[0].text = name
+    new_svg = etree.tostring(xml_data).decode('utf-8')
     svg_file = './speakers/' + id + '.svg'
-    f = open(svg_file, 'a')
+    f = open(svg_file, 'w+')
     f.write( new_svg )
     f.close()
     pdf_file = './speakers/' + id + '.pdf'
-    x = Popen(['/usr/bin/inkscape', svg_file, \
-        '--export-pdf=%s' % pdf_file])
+    cairosvg.svg2pdf(url=svg_file, write_to=pdf_file)
