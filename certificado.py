@@ -3,6 +3,7 @@
 from lxml import etree
 import xlrd
 import cairosvg
+from PyPDF2 import PdfFileMerger
 
 SVGNS = u"http://www.w3.org/2000/svg"
 
@@ -18,6 +19,7 @@ find_text = etree.ETXPath("//{%s}tspan[@id='tspan3951']" % (SVGNS))
 
 workbook = xlrd.open_workbook('./speakers/speakers.xls')
 worksheet = workbook.sheet_by_name('Speakers')
+merger = PdfFileMerger()
 for x in range(1,15,1):
     id = str(int(worksheet.cell(x,0).value))
     name = ''
@@ -33,3 +35,7 @@ for x in range(1,15,1):
     f.close()
     pdf_file = './speakers/' + id + '.pdf'
     cairosvg.svg2pdf(url=svg_file, write_to=pdf_file)
+    merger.append(open(pdf_file, 'rb'))
+
+with open('./speakers/cert.pdf', 'wb') as fout:
+    merger.write(fout)
