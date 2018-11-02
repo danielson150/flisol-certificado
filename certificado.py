@@ -25,7 +25,7 @@ for x in range(1,15,1):
     name = ''
     for y in range(1,4,1):
         name += worksheet.cell(x, y).value
-	name += ' '
+        name += ' '
     name.rstrip()
     find_text(xml_data)[0].text = name
     new_svg = etree.tostring(xml_data).decode('utf-8')
